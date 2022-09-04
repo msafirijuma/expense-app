@@ -28,27 +28,12 @@ btnAdd.addEventListener("click", (e) => {
         expense.expenseAmount = inputAmount;
         expense.expenseItem = inputItem;
         allExpense.push(expense);
-        let tableOutput = "";
-        let indexItem = 0;
-        for (let exp of allExpense) {
-            indexItem++;
-            tableOutput += `
-            <table class="table">
-                <tr>
-                    <th>Item No.</th>
-                    <th>Description</th>
-                    <th>Amount (Tsh)</th>
-                </tr>
-                <tr>
-                    <td>${indexItem}</td>
-                    <td>${exp.expenseItem}</td>
-                    <td>${exp.expenseAmount}</td>
-                </tr>
-            </table >   `
-        }
-        console.clear();
-        console.table(allExpense);
 
+        const tableHTML = allExpense.map(exp => {
+            return `<div> ${exp.expenseAmount} :: ${exp.expenseItem}</div>`
+        })
+
+        tableOutput = tableHTML.join("");
         // Total Amount
         totalExpense += inputAmount;
         displayTotalAmount.innerHTML = totalExpense;
