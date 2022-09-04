@@ -1,10 +1,12 @@
 const btnAdd = document.querySelector("#btnAdd");
 let displayTotalAmount = document.querySelector(".display-total");
-let expensesTable = document.querySelector(".expenses-table")
+let expensesTable = document.querySelector("#expensesTable");
+let indexItem = 0;
 const allExpense = [];
 let totalExpense = 0;
 let amount = document.querySelector("#amount");
 let description = document.querySelector("#description");
+let date = new Date();
 
 btnAdd.addEventListener("click", (e) => {
     e.preventDefault();
@@ -27,20 +29,31 @@ btnAdd.addEventListener("click", (e) => {
         inputAmount = parseFloat(inputAmount)
         expense.expenseAmount = inputAmount;
         expense.expenseItem = inputItem;
-        allExpense.push(expense);
-
+        allExpense.push(expense)
         const tableHTML = allExpense.map(exp => {
-            return `<div> ${exp.expenseAmount} :: ${exp.expenseItem}</div>`
+            return `
+            <li class="list-item">
+                <div class="first-container">
+                    <span class="expenseItem">${exp.expenseItem}</span>
+                    <span class="date">${date.toString()}</span>
+                </div>
+                <div class="amount">${exp.expenseAmount}</div>
+                <button class="btn btn-delete">Delete</button>
+            </li>
+            `
         })
 
-        tableOutput = tableHTML.join("");
+        let tableOutput = tableHTML.join("");
         // Total Amount
         totalExpense += inputAmount;
         displayTotalAmount.innerHTML = totalExpense;
 
         // Print Data HTML Table
         expensesTable.innerHTML = tableOutput;
+        console.log(tableOutput)
     }
 })
 
 
+    // < ul class="list-group" >
+    //     </ul >

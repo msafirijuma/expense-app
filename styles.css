@@ -132,13 +132,35 @@ input:focus {
 }
 
 /* Table of expenses */
-.table {
-    width: 100%;
-    overflow: auto;
-    text-align: left;
+
+.list-container {
+    margin-block: 20px;
 }
 
-th, td {
-    border: 1px solid black;
-    padding: 5px;
+.list-group {
+    display: flex;
+    flex-direction: column;
 }
+
+.list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: baseline;
+}
+
+.first-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-delete {
+    margin: 0;
+    background: #d74040;
+    color: white;
+}
+
+li:nth-child(){
+    background-color: rgba(0 0 0 / 40%);
+}
+
