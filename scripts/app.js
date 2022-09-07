@@ -1,11 +1,11 @@
 const btnAddExpense = document.querySelector("#btnAddExpense");
 let displayTotalAmount = document.querySelector(".display-total");
 let expensesTable = document.querySelector("#expensesTable");
-const listItem = document.querySelector(".list-item");
 let indexItem = 0;
-const allExpense = [];
+const allExpenses = [];
 let totalExpense = 0;
-
+let amount = document.querySelector("#amount");
+let description = document.querySelector("#description");
 
 
 btnAddExpense.addEventListener("click", (e) => {
@@ -15,8 +15,6 @@ btnAddExpense.addEventListener("click", (e) => {
     inputAmount = amount.value;
     inputItem = description.value;
 
-    let currentDate = new Date().toLocaleDateString();
-    let currentTime = new Date().toLocaleTimeString();
 
     if (inputAmount === "" || inputItem === "") {
 
@@ -32,38 +30,23 @@ btnAddExpense.addEventListener("click", (e) => {
             alert("Description was not provided")
         }
     } else {
+        let currentDate = new Date();
+        let currentTime = new Date();
         amount.style.border = "1px solid #555";
         description.style.border = "1px solid #555";
         inputAmount = parseFloat(inputAmount)
         expense.expenseAmount = inputAmount;
         expense.expenseItem = inputItem;
-        expense.currentDate = currentDate;
-        expense.currentTime = currentTime;
-        allExpense.push(expense)
-        const tableHTML = allExpense.map(exp => {
-            return `
-            <li class="list-item" title="Click on the item to see more details">
-                <div class="first-container" onclick="getItemFullDetails();">
-                    <span class="expense-item">${exp.expenseItem}</span>
-                    <span class="date">${expense.currentTime}</span>
-                </div>
-                <div class="amount">${expense.currentDate}</div>
-                <div class="amount">${exp.expenseAmount}</div>
-                <button class="btn btn-delete" onclick="deleteItem()">
-                    <i class="fa fa-trash"></i>
-                </button>
-            </li>
-            `
-        })
+        expense.dateCreated = currentDate;
+        expense.timeCreated = currentTime;
+        allExpenses.push(expense)
 
-        let tableOutput = tableHTML.join("");
+
         // Total Amount
         totalExpense += inputAmount;
         displayTotalAmount.innerHTML = `Total: ${totalExpense}`;
 
-        // Print Data HTML Table
-        expensesTable.innerHTML = tableOutput;
-        console.log(tableOutput)
+
 
         if ((modal.classList.contains("active"))) {
             modal.classList.remove("active")
@@ -72,7 +55,54 @@ btnAddExpense.addEventListener("click", (e) => {
 
     amount.value = "";
     description.value = "";
+    renderExpensesList(allExpenses);
+    console.log(allExpenses)
 })
+
+
+// Get Time
+
+function getTimeString(time) {
+    return time.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric"
+    })
+}
+
+// Get Date
+
+function getDateString(date) {
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    })
+}
+
+// Render Table View
+function renderExpensesList(arrayOfList) {
+    const tableHTML = arrayOfList.map(expense => createExpenseList(expense));
+    const tableOutput = tableHTML.join("")
+    expensesTable.innerHTML = tableOutput;
+}
+
+function createExpenseList({ expenseItem, timeCreated, dateCreated, expenseAmount }) {
+
+    return `
+            <li class="list-item" title="Click on the item to see more details">
+                <div class="first-container" onclick="getItemFullDetails();">
+                    <span class="expense-item">${expenseItem}</span>
+                    <span class="date">${getTimeString(timeCreated)}</span>
+                </div>
+                <div class="date">${getDateString(dateCreated)}</div>
+                <div class="amount">${expenseAmount}</div>
+                <button class="btn btn-delete" onclick="deleteItem()">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </li>
+            `
+}
 
 const getItemFullDetails = () => {
     alert("This will print full description of item and expense");
