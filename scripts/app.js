@@ -14,7 +14,8 @@ btnAddExpense.addEventListener("click", (e) => {
 
     inputAmount = amount.value;
     inputItem = description.value;
-
+    let currentDate = new Date();
+    let currentTime = new Date();
 
     if (inputAmount === "" || inputItem === "") {
 
@@ -30,8 +31,7 @@ btnAddExpense.addEventListener("click", (e) => {
             alert("Description was not provided")
         }
     } else {
-        let currentDate = new Date();
-        let currentTime = new Date();
+
         amount.style.border = "1px solid #555";
         description.style.border = "1px solid #555";
         inputAmount = parseFloat(inputAmount)
@@ -91,28 +91,48 @@ function createExpenseList({ expenseItem, timeCreated, dateCreated, expenseAmoun
 
     return `
             <li class="list-item" title="Click on the item to see more details">
-                <div class="first-container" onclick="getItemFullDetails();">
+                <div title="Show More Details" class="first-container" onclick="getItemFullDetails(${dateCreated.valueOf()});">
                     <span class="expense-item">${expenseItem}</span>
                     <span class="date">${getTimeString(timeCreated)}</span>
                 </div>
                 <div class="date">${getDateString(dateCreated)}</div>
                 <div class="amount">${expenseAmount}</div>
-                <button class="btn btn-delete" onclick="deleteItem()">
+                <button class="btn btn-delete" onclick="deleteItem(${dateCreated.valueOf()})" title="Delete This Item">
                     <i class="fa fa-trash"></i>
+                </button>
+                <button class="btn btn-edit" onclick="editItem(${dateCreated.valueOf()})" title="Delete This Item">
+                    <i class="fa fa-trash">ed</i>
                 </button>
             </li>
             `
 }
 
-const getItemFullDetails = () => {
-    alert("This will print full description of item and expense");
+const getItemFullDetails = (dateOfCreation) => {
+    allExpenses.map(expense => {
+        if (dateOfCreation === expense.dateCreated.valueOf()) {
+            console.log(expense);
+        }
+    })
 }
 
-const deleteItem = () => {
-    let deleteThisItem = confirm("Do you want to delete this item from list?")
-    if (deleteThisItem) {
-        alert("Delete")
-    } else {
-        alert("Failed to delete")
-    }
+
+const deleteItem = (dateOfCreation) => {
+
+    allExpenses.map(expense => {
+        if (dateOfCreation === expense.dateCreated.valueOf()) {
+            allExpenses.splice(allExpenses.indexOf(expense), 1)
+        }
+    })
+
+    renderExpensesList(allExpenses)
 }
+
+const editItem = (dateOfCreation) => {
+    allExpenses.map(expense => {
+        if (dateOfCreation === expense.dateCreated.valueOf()) {
+            console.log(expense)
+        }
+    })
+}
+
+
