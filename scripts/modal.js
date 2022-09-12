@@ -14,6 +14,6 @@ btnClose.addEventListener("click", () => {
 
 btnAddNewExpense.addEventListener("click", () => {
     if (!(modal.classList.contains("active"))) {
-        modal.classList.add("active")
+        modal.classList.add("active");
     }
 })

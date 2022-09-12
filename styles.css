@@ -24,6 +24,7 @@ body {
 .header {
     background-color: #000;
     color: #fefefe;
+    width: 100%;
 }
 
 .nav {
@@ -137,6 +138,11 @@ input:focus {
     margin: 3px;
 }
 
+#formInputDetails,
+#editDetails {
+    width: 100%;
+}
+
 .btn {
     display: block;
     margin: 10px auto;
@@ -164,7 +170,7 @@ input:focus {
     display: flex;
     top: 5px;
     width: 96%;
-    height: 60vh;
+    height: 68vh;
     transition: top 0.5s linear, opacity 0.5s linear;
 }
 
@@ -294,6 +300,60 @@ li:hover {
     padding: 15px;
 }
 
+.expense-edit {
+    display: none;
+}
+
+.expense-edit label {
+    color:var(--light-color)
+}
+
+.expense-edit.show {
+    display: flex;
+    position: absolute;
+    width: 96%;
+    background-color: var(--dark-color-two);
+}
+
+.edit-btn-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#btnEditExpense,
+#btnCancelExpense {
+    cursor: pointer;
+    padding: 10px 15px;
+    color: var(--light-color);
+    font-size: 1.4rem;
+}
+
+#btnEditExpense {
+    background-color: blue;
+}
+
+#btnCancelExpense {
+    margin-right: 0.8rem;
+    background-color: #d74040;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-content: stretch;
+    background: var(--dark-color-two);
+    width: 100%;
+}
+
+.footer h2 {
+    padding: 20px 3px;
+    font-size: 1.49rem;
+    color: var(--light-color);
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 768px) {
@@ -362,5 +422,4 @@ li:hover {
         padding-block: 16px;
         padding-inline: 20px;
     }
-
 }

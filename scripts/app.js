@@ -6,8 +6,12 @@ const allExpenses = [];
 let totalExpense = 0;
 let amount = document.querySelector("#amount");
 let description = document.querySelector("#description");
-let itemDetails = document.querySelector("#form-input-details")
+let itemDetails = document.querySelector("#formInputDetails")
 let itemDetailsContainer = document.querySelector(".item-details-container")
+let editExpense = document.querySelector(".expense-edit");
+let editAmount = document.querySelector("#editAmount");
+let editDescribedItem = document.querySelector("#editDescribedItem");
+let editDetails = document.querySelector("#editDetails");
 
 
 btnAddExpense.addEventListener("click", (e) => {
@@ -52,13 +56,12 @@ btnAddExpense.addEventListener("click", (e) => {
         if ((modal.classList.contains("active"))) {
             modal.classList.remove("active")
         }
+        renderExpensesList(allExpenses);
+        console.log(allExpenses)
     }
-
     amount.value = "";
     description.value = "";
     itemDetails.value = "";
-    renderExpensesList(allExpenses);
-    console.log(allExpenses)
 })
 
 
@@ -161,9 +164,69 @@ const deleteItem = (dateOfCreation) => {
 const editItem = (dateOfCreation) => {
     allExpenses.map(expense => {
         if (dateOfCreation === expense.dateCreated.valueOf()) {
-            console.log(expense)
+            if (!(editExpense.classList.contains("show"))) {
+                editExpense.classList.add("show");
+                editAmount.value = expense.expenseAmount
+                editDescribedItem.value = expense.expenseItem
+                editDetails.value = expense.expenseDetails;
+            }
         }
     })
 }
+
+// Edit btns
+
+document.querySelector("#btnCancelExpense").addEventListener("click", (e) => {
+    e.preventDefault();
+    if (editExpense.classList.contains("show")) {
+        editExpense.classList.remove("show");
+    }
+})
+
+document.querySelector("#btnEditExpense").addEventListener("click", (e) => {
+    e.preventDefault();
+    if (editExpense.classList.contains("show")) {
+        editExpense.classList.remove("show");
+    }
+    if (inputAmount === "" || inputItem === "") {
+
+        if (inputAmount === "" && inputItem === "") {
+            alert("Amount and Description are required")
+            amount.style.border = "1px solid red";
+            description.style.border = "1px solid red"
+        } else if (inputAmount === "") {
+            amount.style.border = "1px solid red"
+            alert("Please enter an amount")
+        } else {
+            description.style.border = "1px solid red"
+            alert("Description was not provided")
+        }
+    } else {
+
+        amount.style.border = "1px solid #555";
+        description.style.border = "1px solid #555";
+        inputAmount = parseFloat(inputAmount)
+        expense.expenseAmount = inputAmount;
+        expense.expenseItem = inputItem;
+        expense.expenseDetails = inputItemDetails;
+        expense.dateCreated = currentDate;
+        expense.timeCreated = currentTime;
+        allExpenses.push(expense)
+
+        // Total Amount
+        totalExpense += inputAmount;
+        displayTotalAmount.innerHTML = `Total: ${totalExpense}`;
+
+        if ((modal.classList.contains("active"))) {
+            modal.classList.remove("active")
+        }
+        renderExpensesList(allExpenses);
+        console.log(allExpenses)
+    }
+    amount.value = "";
+    description.value = "";
+    itemDetails.value = "";
+})
+
 
 

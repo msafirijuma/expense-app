@@ -55,22 +55,72 @@
           </div>
           <div class="form-group">
             <label for="description" class="form-label">Description</label>
-            <div class="form-control-append">
-              <span class="append-icon">&commat;</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Give More Details (Option)"
-                id="form-input-details"
-              />
-            </div>
+            <textarea
+              placeholder="Give more details about an expense (Optional)"
+              name="form-input-details"
+              id="formInputDetails"
+              cols="30"
+              rows="8"
+            ></textarea>
           </div>
           <button class="btn" id="btnAddExpense">Add</button>
         </form>
       </div>
       <div class="item-details-container"></div>
+      <div class="expense-edit">
+        <form action="" class="form">
+          <div class="form-group">
+            <label for="amount" class="form-label">Amount</label>
+            <div class="form-control-append">
+              <span class="append-icon">&dollar;</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Amount Spent"
+                id="editAmount"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-label">Item</label>
+            <div class="form-control-append">
+              <span class="append-icon">&commat;</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Spent On"
+                id="editDescribedItem"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              name="form-input-details"
+              id="editDetails"
+              cols="30"
+              rows="8"
+            ></textarea>
+          </div>
+          <div class="edit-btn-group">
+            <button class="btnCancelExpense" id="btnCancelExpense">
+              Cancel
+            </button>
+            <button class="btnEditExpense" id="btnEditExpense">Update</button>
+          </div>
+        </form>
+      </div>
     </main>
-    <footer class="footer"></footer>
+    <footer class="footer">
+      <h2>
+        Developed by Msafiri &copy;
+        <span class="copyright"> </span>
+        <script>
+          let date = new Date();
+          document.querySelector(".copyright").innerHTML = date.getFullYear();
+        </script>
+      </h2>
+    </footer>
     <script src="scripts/modal.js"></script>
     <script src="scripts/app.js"></script>
   </body>
