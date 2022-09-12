@@ -40,7 +40,7 @@ body {
 .display-total {
     font-size: 25px;
     padding: 25px 10px;
-    background: dimgrey;
+    background: var(--dark-color-two);
 }
 
 /* MAIN */
@@ -164,7 +164,7 @@ input:focus {
     display: flex;
     top: 5px;
     width: 96%;
-    height: 50vh;
+    height: 60vh;
     transition: top 0.5s linear, opacity 0.5s linear;
 }
 
@@ -210,11 +210,18 @@ input:focus {
     text-decoration: underline;
 }
 
-.btn-delete {
-    margin: 0;
+.btn-delete{
+    margin: 0 2px;
     background: #d74040;
     color: white;
 }
+
+.btn-edit {
+    margin: 0;
+    background: blue;
+    color: white;
+}
+
 
 li:nth-child(odd){
     background-color: rgba(0 0 0 / 10%);
@@ -229,6 +236,62 @@ li:hover {
     font-size: 22px;
     font-family: cursive;
     margin-bottom: 2px;
+}
+
+.customize-btn {
+    display: flex;
+}
+
+.item-details-container {
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--dark-color-two);
+    color: var(--light-color);
+    z-index: 1000;
+}
+
+.item-details-title {
+    font-size: 1.7rem;
+    background-color: black;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-block: 15px;
+}
+
+.item-details-container .category {
+    font-size: 1.5rem;
+    margin-right: 5px;
+}
+
+.item-details{
+    display: inherit;
+    flex-direction: column;
+    font-size: 1.3rem;
+    padding-left: 8px;
+    padding-block: 50px;
+    padding-top: 20px;
+    line-height: 1.8rem;
+}
+
+.item-details div {
+    margin-block: 2px;
+}
+
+.item-details-container.show {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 18px;
+}
+
+.btn-discard-details {
+    background-color: #000;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    padding: 15px;
 }
 
 /* MEDIA QUERIES */
@@ -250,7 +313,7 @@ li:hover {
         display: flex;
         top: 5px;
         width: 600px;
-        height: 40vh;
+        height: 60vh;
     }
 
     .btn-close {

@@ -6,6 +6,8 @@ const allExpenses = [];
 let totalExpense = 0;
 let amount = document.querySelector("#amount");
 let description = document.querySelector("#description");
+let itemDetails = document.querySelector("#form-input-details")
+let itemDetailsContainer = document.querySelector(".item-details-container")
 
 
 btnAddExpense.addEventListener("click", (e) => {
@@ -14,6 +16,7 @@ btnAddExpense.addEventListener("click", (e) => {
 
     inputAmount = amount.value;
     inputItem = description.value;
+    inputItemDetails = itemDetails.value;
     let currentDate = new Date();
     let currentTime = new Date();
 
@@ -37,16 +40,14 @@ btnAddExpense.addEventListener("click", (e) => {
         inputAmount = parseFloat(inputAmount)
         expense.expenseAmount = inputAmount;
         expense.expenseItem = inputItem;
+        expense.expenseDetails = inputItemDetails;
         expense.dateCreated = currentDate;
         expense.timeCreated = currentTime;
         allExpenses.push(expense)
 
-
         // Total Amount
         totalExpense += inputAmount;
         displayTotalAmount.innerHTML = `Total: ${totalExpense}`;
-
-
 
         if ((modal.classList.contains("active"))) {
             modal.classList.remove("active")
@@ -55,6 +56,7 @@ btnAddExpense.addEventListener("click", (e) => {
 
     amount.value = "";
     description.value = "";
+    itemDetails.value = "";
     renderExpensesList(allExpenses);
     console.log(allExpenses)
 })
@@ -63,7 +65,7 @@ btnAddExpense.addEventListener("click", (e) => {
 // Get Time
 
 function getTimeString(time) {
-    return time.toLocaleTimeString("en-US", {
+    return time.toLocaleTimeString("en-US", { hour12: false }, {
         hour: "numeric",
         minute: "numeric",
         second: "numeric"
@@ -73,7 +75,7 @@ function getTimeString(time) {
 // Get Date
 
 function getDateString(date) {
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric"
@@ -97,25 +99,53 @@ function createExpenseList({ expenseItem, timeCreated, dateCreated, expenseAmoun
                 </div>
                 <div class="date">${getDateString(dateCreated)}</div>
                 <div class="amount">${expenseAmount}</div>
-                <button class="btn btn-delete" onclick="deleteItem(${dateCreated.valueOf()})" title="Delete This Item">
-                    <i class="fa fa-trash"></i>
-                </button>
-                <button class="btn btn-edit" onclick="editItem(${dateCreated.valueOf()})" title="Delete This Item">
-                    <i class="fa fa-trash">ed</i>
-                </button>
+                <div class="customize-btn">
+                    <button class="btn btn-delete" onclick="deleteItem(${dateCreated.valueOf()})" title="Delete This Item">
+                        <i class="fa fa-trash">del</i>
+                    </button>
+                    <button class="btn btn-edit" onclick="editItem(${dateCreated.valueOf()})" title="Delete This Item">
+                        <i class="fa fa-edit">ed</i>
+                    </button>
+                </div>
             </li>
             `
 }
 
+// Overall Details
 const getItemFullDetails = (dateOfCreation) => {
     allExpenses.map(expense => {
         if (dateOfCreation === expense.dateCreated.valueOf()) {
-            console.log(expense);
+            // console.log(expense);
+            if (!(itemDetailsContainer.classList.contains("show"))) {
+                itemDetailsContainer.classList.add("show");
+                let x = ` <span class="item-details-title">Item Details</span>
+                    <div class="item-details">
+                    <div><span class="category">Item:</span>${expense.expenseItem}</div>
+                    <div><span class="category">Amount:</span> ${expense.expenseAmount}</div>
+                    <div><span class="category">Date:</span>${getDateString(expense.dateCreated)}</div>
+                    <div><span class="category">Time:</span>${getTimeString(expense.timeCreated)}</div>
+                    <div>
+                        <span class="category">Description:</span>: ${expense.expenseDetails}
+                    </div>
+                    </div>
+                    <span class="btn btn-discard-details" onclick="discardDetails()"
+                    >OK</span
+                    > `
+                itemDetailsContainer.innerHTML = x;
+            }
         }
     })
 }
 
+// Discard Item Details
 
+const discardDetails = () => {
+    if (itemDetailsContainer.classList.contains("show")) {
+        itemDetailsContainer.classList.remove("show")
+    }
+}
+
+// Delete Event Handler
 const deleteItem = (dateOfCreation) => {
 
     allExpenses.map(expense => {
@@ -127,6 +157,7 @@ const deleteItem = (dateOfCreation) => {
     renderExpensesList(allExpenses)
 }
 
+// Edit Event Handler
 const editItem = (dateOfCreation) => {
     allExpenses.map(expense => {
         if (dateOfCreation === expense.dateCreated.valueOf()) {

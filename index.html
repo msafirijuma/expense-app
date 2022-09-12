@@ -20,7 +20,7 @@
       <div class="list-container">
         <div class="columnTitle">
           <span>Item</span>
-          <span>Date Created</span>
+          <span>Date</span>
           <span>Amount</span>
           <span>Customize</span>
         </div>
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="description" class="form-label">Description</label>
+            <label for="description" class="form-label">Item</label>
             <div class="form-control-append">
               <span class="append-icon">&commat;</span>
               <input
@@ -53,9 +53,22 @@
               />
             </div>
           </div>
+          <div class="form-group">
+            <label for="description" class="form-label">Description</label>
+            <div class="form-control-append">
+              <span class="append-icon">&commat;</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Give More Details (Option)"
+                id="form-input-details"
+              />
+            </div>
+          </div>
           <button class="btn" id="btnAddExpense">Add</button>
         </form>
       </div>
+      <div class="item-details-container"></div>
     </main>
     <footer class="footer"></footer>
     <script src="scripts/modal.js"></script>
