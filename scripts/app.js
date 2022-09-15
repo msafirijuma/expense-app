@@ -1,7 +1,6 @@
 const btnAddExpense = document.querySelector("#btnAddExpense");
 let displayTotalAmount = document.querySelector(".display-total");
 let expensesTable = document.querySelector("#expensesTable");
-let indexItem = 0;
 let allExpenses = [];
 let totalExpense = 0;
 let amount = document.querySelector("#amount");
@@ -234,14 +233,7 @@ const editExpenseForm = (e) => {
     } else {
         messageItemEdit.innerHTML = "";
         messageAmountEdit.innerHTML = "";
-        // console.log(expense)
-        // expense.expenseAmount = newAmount;
-        // expense.expenseItem = newDescribedItem;
-        // expense.expenseDetails = newEditedDetails;
-        // renderExpensesList(allExpenses);
-        // allExpenses.map(expense => {
-        //     console.log(expense)
-        // })
+        console.log(newAmount, newDescribedItem, newEditedDetails);
 
         // Hide Modal
         if (editExpense.classList.contains("show")) {
