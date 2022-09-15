@@ -22,7 +22,7 @@
           <span>Item</span>
           <span>Date</span>
           <span>Amount</span>
-          <span>Customize</span>
+          <span>Action</span>
         </div>
         <ul class="list-group" id="expensesTable"></ul>
       </div>
@@ -40,6 +40,7 @@
                 id="amount"
               />
             </div>
+            <div class="message-amount"></div>
           </div>
           <div class="form-group">
             <label for="description" class="form-label">Item</label>
@@ -52,6 +53,7 @@
                 id="description"
               />
             </div>
+            <div class="message-item"></div>
           </div>
           <div class="form-group">
             <label for="description" class="form-label">Description</label>
@@ -80,6 +82,7 @@
                 id="editAmount"
               />
             </div>
+            <div class="message-amount-edit"></div>
           </div>
           <div class="form-group">
             <label for="description" class="form-label">Item</label>
@@ -92,10 +95,12 @@
                 id="editDescribedItem"
               />
             </div>
+            <div class="message-item-edit"></div>
           </div>
           <div class="form-group">
             <label for="description" class="form-label">Description</label>
             <textarea
+              placeholder="Give more details about an expense (Optional)"
               name="form-input-details"
               id="editDetails"
               cols="30"
@@ -106,7 +111,13 @@
             <button class="btnCancelExpense" id="btnCancelExpense">
               Cancel
             </button>
-            <button class="btnEditExpense" id="btnEditExpense">Update</button>
+            <button
+              class="btnEditExpense"
+              id="btnEditExpense"
+              onclick="editExpenseForm(event)"
+            >
+              Update
+            </button>
           </div>
         </form>
       </div>

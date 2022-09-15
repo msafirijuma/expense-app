@@ -2,7 +2,7 @@ const btnAddExpense = document.querySelector("#btnAddExpense");
 let displayTotalAmount = document.querySelector(".display-total");
 let expensesTable = document.querySelector("#expensesTable");
 let indexItem = 0;
-const allExpenses = [];
+let allExpenses = [];
 let totalExpense = 0;
 let amount = document.querySelector("#amount");
 let description = document.querySelector("#description");
@@ -12,33 +12,42 @@ let editExpense = document.querySelector(".expense-edit");
 let editAmount = document.querySelector("#editAmount");
 let editDescribedItem = document.querySelector("#editDescribedItem");
 let editDetails = document.querySelector("#editDetails");
+let messageAmount = document.querySelector(".message-amount");
+let messageItem = document.querySelector(".message-item");
+let messageAmountEdit = document.querySelector(".message-amount-edit");
+let messageItemEdit = document.querySelector(".message-item-edit");
 
 
 btnAddExpense.addEventListener("click", (e) => {
     e.preventDefault();
     const expense = {};
-
-    inputAmount = amount.value;
-    inputItem = description.value;
-    inputItemDetails = itemDetails.value;
+    let inputAmount = amount.value;
+    let inputItem = description.value;
+    let inputItemDetails = itemDetails.value;
     let currentDate = new Date();
     let currentTime = new Date();
 
     if (inputAmount === "" || inputItem === "") {
 
         if (inputAmount === "" && inputItem === "") {
-            alert("Amount and Description are required")
+            messageAmount.innerHTML = "Please enter an amount";
+            messageItem.innerHTML = "Item cannot be empty";
             amount.style.border = "1px solid red";
             description.style.border = "1px solid red"
         } else if (inputAmount === "") {
-            amount.style.border = "1px solid red"
-            alert("Please enter an amount")
+            amount.style.border = "1px solid red";
+            description.style.border = "1px solid #555"
+            messageAmount.innerHTML = "Please enter an amount"
+            messageItem.innerHTML = "";
         } else {
-            description.style.border = "1px solid red"
-            alert("Description was not provided")
+            description.style.border = "1px solid red";
+            messageItem.innerHTML = "Item cannot be empty";
+            amount.style.border = "1px solid #555";
+            messageAmount.innerHTML = "";
         }
     } else {
-
+        messageAmount.innerHTML = "";
+        messageItem.innerHTML = "";
         amount.style.border = "1px solid #555";
         description.style.border = "1px solid #555";
         inputAmount = parseFloat(inputAmount)
@@ -57,13 +66,20 @@ btnAddExpense.addEventListener("click", (e) => {
             modal.classList.remove("active")
         }
         renderExpensesList(allExpenses);
+        // Setting expenses on localStorage
+        localStorage.setItem("allExpenses", JSON.stringify(allExpenses))
         console.log(allExpenses)
+        messageAmount.innerHTML = "";
+        messageItem.innerHTML = "";
+        resetForm();
     }
+})
+
+let resetForm = () => {
     amount.value = "";
     description.value = "";
     itemDetails.value = "";
-})
-
+}
 
 // Get Time
 
@@ -73,12 +89,14 @@ function getTimeString(time) {
         minute: "numeric",
         second: "numeric"
     })
+
 }
 
-// Get Date
 
+
+// Get Date
 function getDateString(date) {
-    return date.toLocaleString("en-US", {
+    return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric"
@@ -95,7 +113,7 @@ function renderExpensesList(arrayOfList) {
 function createExpenseList({ expenseItem, timeCreated, dateCreated, expenseAmount }) {
 
     return `
-            <li class="list-item" title="Click on the item to see more details">
+            <li class="list-item" title="Click on the item to see more details" id="${dateCreated.valueOf()}">
                 <div title="Show More Details" class="first-container" onclick="getItemFullDetails(${dateCreated.valueOf()});">
                     <span class="expense-item">${expenseItem}</span>
                     <span class="date">${getTimeString(timeCreated)}</span>
@@ -106,7 +124,7 @@ function createExpenseList({ expenseItem, timeCreated, dateCreated, expenseAmoun
                     <button class="btn btn-delete" onclick="deleteItem(${dateCreated.valueOf()})" title="Delete This Item">
                         <i class="fa fa-trash">del</i>
                     </button>
-                    <button class="btn btn-edit" onclick="editItem(${dateCreated.valueOf()})" title="Delete This Item">
+                    <button class="btn btn-edit" onclick="editItem(${dateCreated.valueOf()})" title="Edit This Item">
                         <i class="fa fa-edit">ed</i>
                     </button>
                 </div>
@@ -157,6 +175,8 @@ const deleteItem = (dateOfCreation) => {
         }
     })
 
+    localStorage.setItem("allExpenses", JSON.stringify(allExpenses))
+
     renderExpensesList(allExpenses)
 }
 
@@ -165,7 +185,8 @@ const editItem = (dateOfCreation) => {
     allExpenses.map(expense => {
         if (dateOfCreation === expense.dateCreated.valueOf()) {
             if (!(editExpense.classList.contains("show"))) {
-                editExpense.classList.add("show");
+                editExpense.classList.add("show")
+                // Display Values of Expense Before Edition
                 editAmount.value = expense.expenseAmount
                 editDescribedItem.value = expense.expenseItem
                 editDetails.value = expense.expenseDetails;
@@ -181,52 +202,65 @@ document.querySelector("#btnCancelExpense").addEventListener("click", (e) => {
     if (editExpense.classList.contains("show")) {
         editExpense.classList.remove("show");
     }
+    resetEditForm()
+    messageItemEdit.innerHTML = "";
+    messageAmountEdit.innerHTML = "";
 })
 
-document.querySelector("#btnEditExpense").addEventListener("click", (e) => {
-    e.preventDefault();
-    if (editExpense.classList.contains("show")) {
-        editExpense.classList.remove("show");
-    }
-    if (inputAmount === "" || inputItem === "") {
+const resetEditForm = () => {
+    editAmount.value = "";
+    editDescribedItem.value = "";
+    editDetails.value = "";
+}
 
-        if (inputAmount === "" && inputItem === "") {
-            alert("Amount and Description are required")
-            amount.style.border = "1px solid red";
-            description.style.border = "1px solid red"
-        } else if (inputAmount === "") {
-            amount.style.border = "1px solid red"
-            alert("Please enter an amount")
+const editExpenseForm = (e) => {
+    e.preventDefault();
+    let newAmount = editAmount.value;
+    let newDescribedItem = editDescribedItem.value;
+    let newEditedDetails = editDetails.value;
+
+    if (newAmount === "" || newDescribedItem === "") {
+
+        if (newAmount === "" && newDescribedItem === "") {
+            messageItemEdit.innerHTML = "item cannot be empty"
+            messageAmountEdit.innerHTML = "Please enter an amount";
+        } else if (newAmount === "") {
+            messageAmountEdit.innerHTML = "Please enter an amount";
+            messageItemEdit.innerHTML = "";
         } else {
-            description.style.border = "1px solid red"
-            alert("Description was not provided")
+            messageItemEdit.innerHTML = "item cannot be empty"
+            messageAmountEdit.innerHTML = "";
         }
     } else {
+        messageItemEdit.innerHTML = "";
+        messageAmountEdit.innerHTML = "";
+        // console.log(expense)
+        // expense.expenseAmount = newAmount;
+        // expense.expenseItem = newDescribedItem;
+        // expense.expenseDetails = newEditedDetails;
+        // renderExpensesList(allExpenses);
+        // allExpenses.map(expense => {
+        //     console.log(expense)
+        // })
 
-        amount.style.border = "1px solid #555";
-        description.style.border = "1px solid #555";
-        inputAmount = parseFloat(inputAmount)
-        expense.expenseAmount = inputAmount;
-        expense.expenseItem = inputItem;
-        expense.expenseDetails = inputItemDetails;
-        expense.dateCreated = currentDate;
-        expense.timeCreated = currentTime;
-        allExpenses.push(expense)
-
-        // Total Amount
-        totalExpense += inputAmount;
-        displayTotalAmount.innerHTML = `Total: ${totalExpense}`;
-
-        if ((modal.classList.contains("active"))) {
-            modal.classList.remove("active")
+        // Hide Modal
+        if (editExpense.classList.contains("show")) {
+            editExpense.classList.remove("show");
         }
-        renderExpensesList(allExpenses);
-        console.log(allExpenses)
     }
-    amount.value = "";
-    description.value = "";
-    itemDetails.value = "";
-})
+}
 
+// Load Expenses from localStorage
+
+// window.addEventListener("load", () => {
+//     allExpenses = Array.from(JSON.parse(localStorage.getItem("allExpenses")));
+//     console.log(allExpenses);
+//     allExpenses.map(expense => {
+//         const list = document.querySelector("ul");
+//         const li = document.createElement("li");
+//         li.innerHTML = renderExpensesList(expense)
+//         list.insertBefore(li, list.children[0]);
+//     })
+// })
 
 
