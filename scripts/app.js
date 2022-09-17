@@ -246,10 +246,10 @@ const editExpenseForm = (e) => {
 const btnClose = document.querySelector(".btn-close")
 
 btnClose.addEventListener("click", () => {
+    modal.classList.remove("active")
     if (modal.classList.contains("active")) {
-        modal.classList.remove("active")
-        amount.style.border = "1px solid #555";
         description.style.border = "1px solid #555"
+        amount.style.border = "1px solid #555";
     }
     messageAmount.innerHTML = "";
     messageItem.innerHTML = "";
