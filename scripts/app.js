@@ -49,6 +49,12 @@ btnAddExpense.addEventListener("click", (e) => {
         messageItem.innerHTML = "";
         amount.style.border = "1px solid #555";
         description.style.border = "1px solid #555";
+        if (inputItemDetails == "") {
+            inputItemDetails = "No details recorded for this item, Add details."
+        } else {
+            inputItemDetails = inputItemDetails
+        }
+
         inputAmount = parseFloat(inputAmount)
         expense.expenseAmount = inputAmount;
         expense.expenseItem = inputItem;
@@ -145,7 +151,7 @@ const getItemFullDetails = (dateOfCreation) => {
                     <div><span class="category">Date:</span>${getDateString(expense.dateCreated)}</div>
                     <div><span class="category">Time:</span>${getTimeString(expense.timeCreated)}</div>
                     <div>
-                        <span class="category">Description:</span>: ${expense.expenseDetails}
+                        <span class="category">Description:</span> ${expense.expenseDetails}
                     </div>
                     </div>
                     <span class="btn btn-discard-details" onclick="discardDetails()"
@@ -170,11 +176,14 @@ const deleteItem = (dateOfCreation) => {
 
     allExpenses.map(expense => {
         if (dateOfCreation === expense.dateCreated.valueOf()) {
-            allExpenses.splice(allExpenses.indexOf(expense), 1)
+            allExpenses.splice(allExpenses.indexOf(expense), 1);
+            totalExpense -= expense.expenseAmount;
         }
     })
 
     localStorage.setItem("allExpenses", JSON.stringify(allExpenses))
+
+    displayTotalAmount.innerHTML = `Total: ${totalExpense}`;
 
     renderExpensesList(allExpenses)
 }
@@ -221,13 +230,13 @@ const editExpenseForm = (e) => {
     if (newAmount === "" || newDescribedItem === "") {
 
         if (newAmount === "" && newDescribedItem === "") {
-            messageItemEdit.innerHTML = "item cannot be empty"
+            messageItemEdit.innerHTML = "Item cannot be empty"
             messageAmountEdit.innerHTML = "Please enter an amount";
         } else if (newAmount === "") {
             messageAmountEdit.innerHTML = "Please enter an amount";
             messageItemEdit.innerHTML = "";
         } else {
-            messageItemEdit.innerHTML = "item cannot be empty"
+            messageItemEdit.innerHTML = "Item cannot be empty"
             messageAmountEdit.innerHTML = "";
         }
     } else {
